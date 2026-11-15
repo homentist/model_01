@@ -1,5 +1,4 @@
 import React from 'react';
-import './desktop-refinement.css';
 import { Navbar } from './components/Navbar.tsx';
 import { Hero } from './components/Hero.tsx';
 import { StatsAbout } from './components/StatsAbout.tsx';
