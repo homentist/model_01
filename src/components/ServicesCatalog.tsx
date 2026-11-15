@@ -1,255 +1,50 @@
 import React, { useState } from 'react';
-import { SERVICES, ServiceItem } from '../data/portfolioData.ts';
-import { Check, ArrowRight, Sparkles, ChevronRight, FileText, Layers, Palette } from 'lucide-react';
-import editorialImg from '../assets/images/editorial_design_mockup_1790361380025.jpg';
+import { ArrowUpRight, Check } from 'lucide-react';
 
-interface ServicesCatalogProps {
-  onSelectServiceForQuote?: (serviceId: string) => void;
-}
+type Tab = 'marketing' | 'visual';
+const marketing = [
+  { title: 'SEO／GEO 新文章撰寫', desc: '從受眾需求、關鍵字與搜尋意圖出發，完成具研究脈絡的原創專業文章。', price: 'NT$ 3,000／篇', note: '非工業文章；工業技術文章 NT$ 4,000／篇', features: ['前期需求訪談與搜尋意圖分析', '關鍵字篩選、資料整合與考證', '原創文章撰寫，平均 2,000–3,000 字', 'SEO／GEO 關鍵字自然布局'] },
+  { title: '既有文章優化', desc: '重新檢視舊文章的搜尋意圖、內容架構與關鍵字布局，讓既有內容重新發揮價值。', price: 'NT$ 3,000／篇', note: '平均字數 2,000–3,000 字', features: ['前期訪談與搜尋意圖分析', '關鍵字重新篩選', '文章架構、標題與段落重整', '內部連結與關鍵字布局建議'] },
+  { title: 'SEO／GEO 策略規劃', desc: '依照品牌目標與網站現況，整理關鍵字方向、搜尋需求、內容主題與執行優先順序。', price: '依需求評估報價', note: '依網站規模、研究範圍與交付內容確認', features: ['關鍵字與搜尋意圖分析', '內容主題與架構規劃', '網站內容盤點與優化方向', '階段性執行建議'] },
+  { title: 'SEO／GEO 顧問與內容健檢', desc: '針對現有內容或執行問題提供診斷與建議，協助釐清下一步優化方向。', price: '依需求評估報價', note: '先確認諮詢範圍與交付方式', features: ['網站與內容現況討論', '搜尋內容問題盤點', '優化建議與執行方向', '依專案需求安排後續合作'] },
+];
+const visual = [
+  { title: '電子書、白皮書與型錄', desc: '將專業文章、產品資訊與數據重新梳理，建立清楚的資訊層次與閱讀動線。', price: 'NT$ 800／頁', note: '電子書及 DM 型錄設計', features: ['資訊分類與主次整理', '客製化版面與閱讀動線', '電子書、白皮書、產品型錄與 DM', '依確認規格交付檔案'] },
+  { title: '社群圖文設計', desc: '從主題與痛點企劃、貼文文案到主視覺，建立清楚且一致的社群溝通。', price: 'NT$ 850／式', note: '含文案＋主圖一張；純圖片設計 NT$ 500／張', features: ['貼文主題與痛點企劃', '社群文案撰寫', '主圖視覺設計', '品牌色彩與版型延伸'] },
+  { title: '品牌簡報與資訊排版', desc: '整理簡報內容、圖表與資訊層級，讓專業資料更容易理解與傳達。', price: '依需求評估報價', note: '依頁數、素材與設計複雜度確認', features: ['資訊架構與頁面編排', '圖表與重點資訊視覺化', '簡報版型與整體視覺統整'] },
+  { title: '平面設計與客製排版', desc: '依品牌需求延伸海報、名片、菜單及其他客製化視覺項目。', price: '依客製範圍報價', note: '先確認需求與交付規格', features: ['品牌海報與活動視覺', '菜單、名片等平面設計', '依專案範圍提供階段性報價'] },
+];
+const steps = [
+  ['01', '需求洽詢', '確認產業、專案目標、需求內容與預算。'],
+  ['02', '需求分析與方向規劃', '釐清搜尋需求、內容方向、設計目的與執行範圍。'],
+  ['03', '報價與合作確認', '確認服務項目、交付內容、時程與費用。'],
+  ['04', '專案執行', '依確認方向進行研究、撰寫、優化或視覺設計。'],
+  ['05', '交付與後續建議', '完成校對與檔案交付，依專案性質提供後續建議。'],
+];
 
-export const ServicesCatalog: React.FC<ServicesCatalogProps> = ({ onSelectServiceForQuote }) => {
-  const [selectedCategory, setSelectedCategory] = useState<'all' | 'seo' | 'visual' | 'custom'>('all');
-  const [modalService, setModalService] = useState<ServiceItem | null>(null);
-
-  const filteredServices = selectedCategory === 'all'
-    ? SERVICES
-    : SERVICES.filter((s) => s.category === selectedCategory);
-
-  return (
-    <section id="services" className="py-16 sm:py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-b border-slate-800/60">
-      {/* Header matching Reference Image "Property Catalog" */}
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
-        <div className="space-y-3 max-w-2xl">
-          <div className="inline-flex items-center gap-2 text-xs font-semibold tracking-wider text-indigo-400 uppercase">
-            <span className="w-2 h-2 rounded-full bg-indigo-500" />
-            <span>SERVICES & PRICING · 專業服務與透明報價</span>
-          </div>
-
-          <h2 className="text-2xl sm:text-4xl font-extrabold text-white tracking-tight">
-            全方位一條龍服務型錄
-          </h2>
-
-          <p className="text-slate-300 text-sm sm:text-base leading-relaxed">
-            結合行銷心理學、演算法布局與美學排版。每一項服務皆公開透明、清楚定義作業範圍與交付項目，絕無隱藏費用。
-          </p>
-        </div>
-
-        {/* Filter controls */}
-        <div className="flex items-center gap-1.5 p-1 bg-[#121622] border border-slate-800 rounded-xl shrink-0 self-start md:self-end">
-          <button
-            onClick={() => setSelectedCategory('all')}
-            className={`px-3.5 py-1.5 text-xs font-medium rounded-lg transition-colors cursor-pointer ${
-              selectedCategory === 'all' ? 'bg-indigo-600 text-white' : 'text-slate-400 hover:text-white'
-            }`}
-          >
-            全部方案
-          </button>
-          <button
-            onClick={() => setSelectedCategory('seo')}
-            className={`px-3.5 py-1.5 text-xs font-medium rounded-lg transition-colors cursor-pointer ${
-              selectedCategory === 'seo' ? 'bg-indigo-600 text-white' : 'text-slate-400 hover:text-white'
-            }`}
-          >
-            SEO/GEO 文章
-          </button>
-          <button
-            onClick={() => setSelectedCategory('visual')}
-            className={`px-3.5 py-1.5 text-xs font-medium rounded-lg transition-colors cursor-pointer ${
-              selectedCategory === 'visual' ? 'bg-indigo-600 text-white' : 'text-slate-400 hover:text-white'
-            }`}
-          >
-            電子書與社群圖文
-          </button>
-          <button
-            onClick={() => setSelectedCategory('custom')}
-            className={`px-3.5 py-1.5 text-xs font-medium rounded-lg transition-colors cursor-pointer ${
-              selectedCategory === 'custom' ? 'bg-indigo-600 text-white' : 'text-slate-400 hover:text-white'
-            }`}
-          >
-            品牌客製排版
-          </button>
-        </div>
+export const ServicesCatalog: React.FC = () => {
+  const [tab, setTab] = useState<Tab>('marketing');
+  const items = tab === 'marketing' ? marketing : visual;
+  return <section id="services" className="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-b border-slate-800/70">
+    <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-9">
+      <div><p className="text-xs tracking-[0.2em] text-indigo-300 font-semibold mb-4">SERVICES</p><h2 className="text-3xl sm:text-4xl font-bold text-white">從搜尋策略到視覺呈現，<br className="hidden sm:block" />一站整合。</h2><p className="mt-4 text-sm sm:text-base text-slate-300 max-w-2xl">以 SEO／GEO 文章撰寫與內容優化為核心，策略規劃與顧問服務為延伸；視覺設計則提供另一項完整的專業服務。</p></div>
+      <div className="inline-flex self-start p-1 rounded-xl border border-slate-800 bg-[#111827]">
+        <button onClick={() => setTab('marketing')} className={`px-5 py-2.5 rounded-lg text-sm font-semibold transition-colors ${tab === 'marketing' ? 'bg-indigo-600 text-white' : 'text-slate-400 hover:text-white'}`} aria-pressed={tab === 'marketing'}>行銷服務</button>
+        <button onClick={() => setTab('visual')} className={`px-5 py-2.5 rounded-lg text-sm font-semibold transition-colors ${tab === 'visual' ? 'bg-indigo-600 text-white' : 'text-slate-400 hover:text-white'}`} aria-pressed={tab === 'visual'}>視覺設計</button>
       </div>
-
-      {/* Cards Grid: Styled after Reference Image 3-column Catalog */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-        {filteredServices.map((service, idx) => (
-          <div
-            key={service.id}
-            className="bg-[#121622] border border-slate-800/90 hover:border-indigo-500/60 rounded-3xl overflow-hidden transition-all duration-300 hover:shadow-2xl hover:shadow-indigo-950/20 flex flex-col justify-between group"
-          >
-            {/* Visual Top Preview Frame (like Reference Image catalog card with top photo) */}
-            <div className="relative h-48 sm:h-52 bg-[#181f2f] overflow-hidden">
-              {service.id === 'editorial_catalog' ? (
-                <img
-                  src={editorialImg}
-                  alt={service.title}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  referrerPolicy="no-referrer"
-                />
-              ) : (
-                <div className="w-full h-full p-6 flex flex-col justify-between bg-gradient-to-br from-[#131a29] to-[#0d121c] relative overflow-hidden">
-                  <div className="flex justify-between items-start">
-                    <span className="font-mono text-xs text-indigo-400 font-semibold tracking-wider uppercase">
-                      SERVICE 0{idx + 1}
-                    </span>
-                    <span className="text-[11px] px-2.5 py-1 rounded-md bg-slate-800/80 text-slate-300 border border-slate-700/60">
-                      {service.category === 'seo' ? '搜尋引擎布局' : service.category === 'visual' ? '視覺美學' : '客製整合'}
-                    </span>
-                  </div>
-
-                  <div className="space-y-1">
-                    <div className="text-xs text-indigo-300 font-medium">作業範疇</div>
-                    <div className="text-sm font-semibold text-slate-200 line-clamp-2">
-                      {service.subtitle}
-                    </div>
-                  </div>
-
-                  {/* Subtle background glow */}
-                  <div className="absolute -bottom-10 -right-10 w-32 h-32 bg-indigo-600/10 rounded-full blur-2xl" />
-                </div>
-              )}
-
-              {/* Price Tag Overlay on Card Top */}
-              <div className="absolute bottom-3 left-4 right-4 flex items-center justify-between">
-                <span className="px-3 py-1.5 rounded-lg bg-black/80 backdrop-blur-md text-white font-mono font-bold text-xs sm:text-sm border border-white/10 shadow-lg">
-                  {service.price}
-                </span>
-              </div>
-            </div>
-
-            {/* Content Body */}
-            <div className="p-6 sm:p-7 flex-1 flex flex-col justify-between space-y-5">
-              <div className="space-y-3">
-                <h3 className="text-xl font-bold text-white group-hover:text-indigo-300 transition-colors">
-                  {service.title}
-                </h3>
-
-                <p className="text-slate-300 text-xs sm:text-sm leading-relaxed">
-                  {service.description}
-                </p>
-
-                {/* Key feature bullets */}
-                <div className="space-y-2 pt-2 border-t border-slate-800/70">
-                  {service.features.slice(0, 3).map((feat, fIdx) => (
-                    <div key={fIdx} className="flex items-start gap-2 text-xs text-slate-300">
-                      <Check className="w-3.5 h-3.5 text-indigo-400 shrink-0 mt-0.5" />
-                      <span>{feat}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Bottom Actions */}
-              <div className="pt-4 border-t border-slate-800 flex items-center justify-between gap-3">
-                <button
-                  onClick={() => setModalService(service)}
-                  className="text-xs font-semibold text-indigo-400 hover:text-indigo-300 flex items-center gap-1 cursor-pointer transition-colors"
-                >
-                  <span>查看完整細節</span>
-                  <ChevronRight className="w-3.5 h-3.5" />
-                </button>
-
-                <a
-                  href="#estimator"
-                  onClick={() => onSelectServiceForQuote && onSelectServiceForQuote(service.id)}
-                  className="px-3 py-1.5 text-xs font-medium text-slate-200 bg-slate-800 hover:bg-indigo-600 hover:text-white rounded-lg transition-colors cursor-pointer"
-                >
-                  加入費用試算
-                </a>
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
-
-      {/* Detail Modal */}
-      {modalService && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-200">
-          <div className="bg-[#121622] border border-slate-700 max-w-2xl w-full rounded-2xl p-6 sm:p-8 space-y-6 max-h-[90vh] overflow-y-auto">
-            <div className="flex justify-between items-start">
-              <div>
-                <span className="text-xs font-mono text-indigo-400 uppercase tracking-wider">
-                  服務規格詳情
-                </span>
-                <h3 className="text-2xl font-bold text-white mt-1">
-                  {modalService.title}
-                </h3>
-                <p className="text-sm text-slate-300 mt-1">
-                  {modalService.subtitle}
-                </p>
-              </div>
-              <button
-                onClick={() => setModalService(null)}
-                className="text-slate-400 hover:text-white p-2 rounded-lg hover:bg-slate-800 transition-colors"
-              >
-                ✕
-              </button>
-            </div>
-
-            <div className="bg-[#0b0e14] p-4 rounded-xl border border-slate-800 flex items-center justify-between">
-              <div>
-                <div className="text-xs text-slate-400">標準服務定價</div>
-                <div className="text-xl font-bold font-mono text-indigo-300">
-                  {modalService.price}
-                </div>
-              </div>
-              {modalService.priceNote && (
-                <div className="text-xs text-slate-400 max-w-xs text-right">
-                  {modalService.priceNote}
-                </div>
-              )}
-            </div>
-
-            <div className="space-y-3">
-              <h4 className="text-sm font-semibold text-white">五大核心作業流程內容：</h4>
-              <ul className="space-y-2">
-                {modalService.features.map((feat, idx) => (
-                  <li key={idx} className="flex items-start gap-2 text-xs sm:text-sm text-slate-300">
-                    <Check className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
-                    <span>{feat}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <div className="space-y-3">
-              <h4 className="text-sm font-semibold text-white">主要交付項目：</h4>
-              <div className="flex flex-wrap gap-2">
-                {modalService.deliverables.map((item, idx) => (
-                  <span
-                    key={idx}
-                    className="text-xs px-3 py-1.5 rounded-lg bg-indigo-950/60 border border-indigo-800/60 text-indigo-200"
-                  >
-                    {item}
-                  </span>
-                ))}
-              </div>
-            </div>
-
-            <div className="space-y-1 bg-slate-900/60 p-3 rounded-lg border border-slate-800">
-              <div className="text-xs font-semibold text-slate-300">適合對象：</div>
-              <div className="text-xs text-slate-400">{modalService.recommendedFor}</div>
-            </div>
-
-            <div className="flex items-center justify-end gap-3 pt-3 border-t border-slate-800">
-              <button
-                onClick={() => setModalService(null)}
-                className="px-4 py-2 text-xs text-slate-400 hover:text-white"
-              >
-                關閉
-              </button>
-              <a
-                href="#contact"
-                onClick={() => setModalService(null)}
-                className="px-5 py-2.5 text-xs font-semibold text-white bg-indigo-600 hover:bg-indigo-500 rounded-lg transition-colors"
-              >
-                針對此方案諮詢
-              </a>
-            </div>
-          </div>
-        </div>
-      )}
-    </section>
-  );
+    </div>
+    <div className="grid md:grid-cols-2 gap-5">
+      {items.map((item, i) => <article key={item.title} className="rounded-2xl border border-slate-800 bg-[#111827]/85 p-6 sm:p-7">
+        <div className="flex items-start justify-between gap-4"><span className="font-mono text-sm text-indigo-300">0{i + 1}</span><span className="text-xs text-indigo-200 bg-indigo-950/60 border border-indigo-900/80 rounded-full px-3 py-1">{tab === 'marketing' ? 'MARKETING' : 'VISUAL DESIGN'}</span></div>
+        <h3 className="mt-5 text-xl font-semibold text-white">{item.title}</h3><p className="mt-3 text-sm leading-relaxed text-slate-300">{item.desc}</p>
+        <div className="mt-5 border-y border-slate-800 py-4"><p className="text-lg font-semibold text-indigo-200">{item.price}</p><p className="mt-1 text-xs text-slate-400">{item.note}</p></div>
+        <ul className="mt-5 space-y-2.5">{item.features.map(f => <li key={f} className="flex gap-2 text-sm text-slate-300"><Check className="w-4 h-4 text-indigo-300 shrink-0 mt-0.5" />{f}</li>)}</ul>
+        <a href="#contact" className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-indigo-300 hover:text-white transition-colors">洽詢這項服務 <ArrowUpRight className="w-4 h-4" /></a>
+      </article>)}
+    </div>
+    <div className="mt-16 pt-12 border-t border-slate-800">
+      <p className="text-xs tracking-[0.2em] text-indigo-300 font-semibold mb-3">HOW WE WORK</p><h3 className="text-2xl sm:text-3xl font-bold text-white">合作流程</h3><p className="mt-3 text-sm text-slate-400">行銷與設計的執行細節不同，合作確認與交付邏輯則保持清楚透明。</p>
+      <div className="mt-8 grid sm:grid-cols-2 lg:grid-cols-5 gap-4">{steps.map(([n, title, desc]) => <div key={n} className="border-l-2 border-indigo-500/70 pl-4 py-1"><span className="font-mono text-xs text-indigo-300">{n}</span><h4 className="mt-2 text-sm font-semibold text-white">{title}</h4><p className="mt-2 text-xs leading-relaxed text-slate-400">{desc}</p></div>)}</div>
+    </div>
+  </section>;
 };
