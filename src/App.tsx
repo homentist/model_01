@@ -5,7 +5,6 @@ import { StatsAbout } from './components/StatsAbout.tsx';
 import { WhyChooseMe } from './components/WhyChooseMe.tsx';
 import { ServicesCatalog } from './components/ServicesCatalog.tsx';
 import { PortfolioGallery } from './components/PortfolioGallery.tsx';
-import { ClientReviews } from './components/ClientReviews.tsx';
 import { ContactConsultation } from './components/ContactConsultation.tsx';
 import { Footer } from './components/Footer.tsx';
 
@@ -19,7 +18,6 @@ export default function App() {
         <ServicesCatalog />
         <PortfolioGallery />
         <StatsAbout />
-        <ClientReviews />
         <ContactConsultation />
       </main>
       <Footer />
