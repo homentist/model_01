@@ -1,100 +1,26 @@
 import React from 'react';
-import { ArrowRight, Sparkles, TrendingUp, CheckCircle2 } from 'lucide-react';
+import { ArrowDown, ArrowUpRight } from 'lucide-react';
 import heroImg from '../assets/images/hero_modern_architecture_1790361355775.jpg';
 
-interface HeroProps {
-  onOpenSocialStudio: () => void;
-}
-
-export const Hero: React.FC<HeroProps> = ({ onOpenSocialStudio }) => {
-  return (
-    <section className="pt-24 pb-8 sm:pt-28 sm:pb-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-      {/* Massive Rounded Architecture Hero Card inspired by reference image */}
-      <div className="relative rounded-[28px] sm:rounded-[36px] overflow-hidden border border-slate-800/80 bg-[#10141e] shadow-2xl shadow-indigo-950/20 min-h-[480px] sm:min-h-[560px] lg:min-h-[600px] flex items-center">
-        {/* Background Image with Cinematic Architectural Contrast */}
-        <div className="absolute inset-0">
-          <img
-            src={heroImg}
-            alt="Modern architectural structure representing high-level strategy and aesthetic foundations"
-            className="w-full h-full object-cover object-center filter brightness-[0.45] contrast-[1.15]"
-            referrerPolicy="no-referrer"
-          />
-          {/* Measured Scrim & Gradients matching SEO/GEO deck deep tones */}
-          <div className="absolute inset-0 bg-gradient-to-r from-[#0b0e14]/95 via-[#0c1017]/85 to-transparent lg:w-3/4" />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#0b0e14] via-transparent to-transparent" />
-          <div className="absolute top-0 right-0 w-96 h-96 bg-indigo-600/10 rounded-full blur-3xl pointer-events-none" />
-        </div>
-
-        {/* Content Container */}
-        <div className="relative z-10 p-6 sm:p-10 lg:p-14 max-w-3xl">
-          {/* Editorial Kicker / Tags */}
-          <div className="flex flex-wrap items-center gap-2 sm:gap-3 text-xs font-semibold tracking-wider uppercase text-indigo-400 mb-4 sm:mb-6">
-            <span className="px-2.5 py-1 rounded-md bg-indigo-950/70 border border-indigo-700/60 text-indigo-300">
-              REVENUE GROWTH
-            </span>
-            <span className="text-slate-400">·</span>
-            <span className="text-slate-300 font-mono tracking-normal">SEO & GEO AGENCY 2026</span>
-            <span className="text-slate-400">·</span>
-            <span className="text-slate-300">Kung, Hui-Chiao</span>
-          </div>
-
-          {/* Primary Headline */}
-          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight text-white leading-[1.15] text-balance">
-            搜尋力變現：
-            <span className="block mt-1 sm:mt-2 text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-100 to-indigo-200">
-              AI與新搜尋時代的SEO/GEO精準布局
-            </span>
-          </h1>
-
-          {/* Subtitle from the two presentations */}
-          <p className="mt-4 sm:mt-6 text-base sm:text-lg text-slate-300 leading-relaxed font-normal">
-            不走彎路的 SEO/GEO 全方位一條龍整合策略 ✕ 用排版美學留住你的精準客戶。
-            消除 AI 帶來的隱性時間成本，由同一個「行銷大腦」貫徹受眾痛點分析到高轉換排版美學。
-          </p>
-
-          {/* Value points ticker */}
-          <div className="mt-6 flex flex-wrap gap-y-2 gap-x-4 text-xs sm:text-sm text-slate-300">
-            <div className="flex items-center gap-1.5">
-              <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
-              <span>消除 AI 公式化隱性成本</span>
-            </div>
-            <div className="flex items-center gap-1.5">
-              <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
-              <span>策略與內容零斷層</span>
-            </div>
-            <div className="flex items-center gap-1.5">
-              <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
-              <span>排版美學提升信任度</span>
-            </div>
-          </div>
-
-          {/* CTAs */}
-          <div className="mt-8 flex flex-wrap items-center gap-3 sm:gap-4">
-            <a
-              href="#contact"
-              className="px-6 py-3.5 text-sm font-semibold text-slate-950 bg-white hover:bg-slate-100 rounded-xl transition-all shadow-lg hover:shadow-white/10 flex items-center gap-2 group cursor-pointer"
-            >
-              <span>立即預約諮詢</span>
-              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-            </a>
-
-            <button
-              onClick={onOpenSocialStudio}
-              className="px-5 py-3.5 text-sm font-medium text-white bg-slate-900/80 hover:bg-slate-800 border border-slate-700/80 rounded-xl transition-all flex items-center gap-2 cursor-pointer backdrop-blur-sm"
-            >
-              <Sparkles className="w-4 h-4 text-indigo-400" />
-              <span>接案社群宣傳套件</span>
-            </button>
-
-            <a
-              href="#portfolio"
-              className="px-4 py-3.5 text-sm font-medium text-slate-300 hover:text-white transition-colors"
-            >
-              瀏覽實戰案例
-            </a>
-          </div>
-        </div>
+export const Hero: React.FC = () => (
+  <section id="top" className="relative pt-28 sm:pt-36 pb-20 sm:pb-28 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto min-h-[680px] flex items-center">
+    <div className="absolute inset-4 sm:inset-6 top-20 sm:top-24 rounded-[28px] overflow-hidden border border-indigo-950/70">
+      <img src={heroImg} alt="以建築結構與光影呈現內容策略和視覺整合概念" className="w-full h-full object-cover brightness-[0.28] saturate-[0.65]" />
+      <div className="absolute inset-0 bg-gradient-to-r from-[#080d18]/95 via-[#0b1020]/80 to-[#111a36]/45" />
+      <div className="absolute inset-0 bg-gradient-to-t from-[#0b0e14]/90 via-transparent to-[#0b0e14]/10" />
+      <div className="absolute -right-20 top-0 w-[28rem] h-[28rem] rounded-full bg-indigo-500/15 blur-3xl" />
+    </div>
+    <div className="relative z-10 max-w-3xl px-3 sm:px-8 py-12">
+      <p className="text-xs sm:text-sm tracking-[0.22em] text-indigo-300 font-semibold mb-6">SEO / GEO CONTENT STRATEGY × VISUAL COMMUNICATION</p>
+      <h1 className="text-4xl sm:text-6xl lg:text-7xl font-bold tracking-tight leading-[1.18] text-white">
+        讓好內容<br />被搜尋，也被<span className="text-indigo-300">看見。</span>
+      </h1>
+      <p className="mt-7 text-lg sm:text-xl text-slate-200 leading-relaxed max-w-2xl">從 SEO／GEO 搜尋策略、專業文章撰寫與內容優化，到品牌視覺排版整合，讓內容不只被找到，也能清楚傳遞品牌價值。</p>
+      <p className="mt-5 text-sm sm:text-base text-slate-300">行銷策略與視覺美學的雙核心整合大腦</p>
+      <div className="mt-9 flex flex-wrap gap-3">
+        <a href="#services" className="inline-flex items-center gap-2 bg-indigo-500 hover:bg-indigo-400 text-white font-semibold px-5 py-3 rounded-lg transition-colors">了解服務方案 <ArrowUpRight className="w-4 h-4" /></a>
+        <a href="#cases" className="inline-flex items-center gap-2 border border-slate-400/40 hover:border-indigo-300 text-white px-5 py-3 rounded-lg transition-colors">瀏覽成功案例 <ArrowDown className="w-4 h-4" /></a>
       </div>
-    </section>
-  );
-};
+    </div>
+  </section>
+);
